@@ -1,7 +1,6 @@
 import http from 'http';
-import { Server as SocketIOServer } from 'socket.io';
 import { env } from './config/env';
-import { connectDB } from './config/db';
+import connectDB from './config/db';
 import { initSocket } from './socket/socket';
 import app from './app';
 
@@ -10,11 +9,7 @@ const bootstrap = async (): Promise<void> => {
 
   const httpServer = http.createServer(app);
 
-  const io = new SocketIOServer(httpServer, {
-    cors: { origin: env.CLIENT_URL, credentials: true },
-  });
-
-  initSocket(io);
+  initSocket(httpServer);
 
   httpServer.listen(env.PORT, () => {
     console.log('Server running in ' + env.NODE_ENV + ' mode on port ' + env.PORT);

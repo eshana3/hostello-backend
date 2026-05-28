@@ -1,12 +1,12 @@
 import { Server as HttpServer } from "http";
 import { Server as SocketIOServer, Socket } from "socket.io";
-import { verifyToken } from "./utils/token";
-import Chat from "./models/Chat";
-import User from "./models/User";
+import { verifyToken } from "../utils/token";
+import Chat from "../models/Chat";
+import User from "../models/User";
 import {
   setIO,
   notifyNewMessage,
-} from "./services/notificationService";
+} from "../services/notificationService";
 
 interface AuthenticatedSocket extends Socket {
   user?: {

@@ -1,6 +1,6 @@
 import multer from 'multer';
 import { UploadApiResponse } from 'cloudinary';
-import cloudinary from '../config/cloudinary';
+import { cloudinary } from '../config/cloudinary';
 
 // ── Multer memory storage (files stored in RAM as Buffer) ─────────────────────
 const storage = multer.memoryStorage();

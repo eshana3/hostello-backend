@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import Hostel from "../models/Hostel";
 import { generateOTP, hashOTP, verifyOTPHash, getOTPExpiry, sendOTP } from "../utils/otp";
 import { generateToken } from "../utils/token";
 
@@ -133,5 +134,40 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
     console.error("logout error:", error);
     res.status(500).json({ success: false, message: "Logout failed" });
+  }
+};
+
+// PUT /api/auth/update-profile
+export const updateProfile = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { name, hostel: hostelName } = req.body;
+    const updates: Record<string, unknown> = {};
+
+    if (name) updates.name = name;
+
+    if (hostelName) {
+      const hostelDoc = await Hostel.findOne({ name: hostelName });
+      if (hostelDoc) updates.hostel = hostelDoc._id;
+    }
+
+    const user = await User.findByIdAndUpdate(req.user?._id, updates, { new: true }).populate("hostel");
+    if (!user) { res.status(404).json({ success: false, message: "User not found" }); return; }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: {
+        _id: user._id,
+        mobile: user.mobile,
+        name: user.name,
+        isVerified: user.isVerified,
+        isAdmin: user.isAdmin,
+        hostel: user.hostel,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("updateProfile error:", error);
+    res.status(500).json({ success: false, message: "Failed to update profile" });
   }
 };
