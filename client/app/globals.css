@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════════
+   CSS Custom Properties – Design System
+══════════════════════════════════════════════ */
+@layer base {
+  :root {
+    /* ShadCN tokens */
+    --background: 30 20% 97%;
+    --foreground: 20 10% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 10% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 10% 8%;
+    --primary: 24 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 15% 92%;
+    --secondary-foreground: 20 10% 20%;
+    --muted: 30 10% 93%;
+    --muted-foreground: 20 8% 46%;
+    --accent: 24 95% 53%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 24 95% 53%;
+    --radius: 0.75rem;
+
+    /* Glassmorphism tokens */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-bg-hover: rgba(255, 255, 255, 0.80);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-border-subtle: rgba(255, 255, 255, 0.4);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0,0,0,0.06);
+    --glass-blur: 16px;
+
+    /* Brand gradient */
+    --brand-gradient: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
+    --brand-glow: 0 0 40px rgba(249, 115, 22, 0.3);
+
+    /* Mesh background */
+    --mesh-1: hsla(28, 100%, 74%, 0.35);
+    --mesh-2: hsla(189, 100%, 56%, 0.15);
+    --mesh-3: hsla(355, 100%, 85%, 0.25);
+
+    /* Fonts */
+    --font-syne: 'Syne', sans-serif;
+    --font-jetbrains: 'JetBrains Mono', monospace;
+  }
+
+  .dark {
+    --background: 222 20% 8%;
+    --foreground: 30 15% 95%;
+    --card: 222 18% 11%;
+    --card-foreground: 30 15% 95%;
+    --popover: 222 18% 11%;
+    --popover-foreground: 30 15% 95%;
+    --primary: 24 95% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 15% 15%;
+    --secondary-foreground: 30 15% 80%;
+    --muted: 222 15% 14%;
+    --muted-foreground: 30 10% 55%;
+    --accent: 24 95% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 15% 18%;
+    --input: 222 15% 18%;
+    --ring: 24 95% 58%;
+
+    /* Dark glassmorphism tokens */
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-bg-hover: rgba(255, 255, 255, 0.10);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-border-subtle: rgba(255, 255, 255, 0.07);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0,0,0,0.2);
+    --glass-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0,0,0,0.3);
+
+    --mesh-1: hsla(28, 80%, 40%, 0.2);
+    --mesh-2: hsla(189, 80%, 30%, 0.12);
+    --mesh-3: hsla(355, 80%, 30%, 0.18);
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-syne), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-syne), sans-serif;
+    font-weight: 700;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   Glassmorphism Utilities
+══════════════════════════════════════════════ */
+@layer components {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-hover {
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+  .glass-hover:hover {
+    background: var(--glass-bg-hover);
+    box-shadow: var(--glass-shadow-lg);
+  }
+
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    border: 1px solid var(--glass-border-subtle);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius);
+  }
+
+  .glass-navbar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border-subtle);
+    box-shadow: 0 1px 20px rgba(0,0,0,0.06);
+  }
+
+  /* Animated mesh background */
+  .mesh-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(at 40% 20%, var(--mesh-1) 0px, transparent 50%),
+      radial-gradient(at 80% 10%, var(--mesh-2) 0px, transparent 50%),
+      radial-gradient(at 5%  60%, var(--mesh-3) 0px, transparent 50%),
+      radial-gradient(at 70% 80%, var(--mesh-1) 0px, transparent 40%);
+    pointer-events: none;
+  }
+
+  /* Brand gradient text */
+  .brand-text {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Shimmer skeleton */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--muted)) 25%,
+      hsl(var(--muted) / 0.5) 50%,
+      hsl(var(--muted)) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+    border-radius: var(--radius);
+  }
+
+  /* OTP input */
+  .otp-input {
+    @apply w-12 h-14 text-center text-xl font-bold glass rounded-xl border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-200;
+  }
+
+  /* Floating label input */
+  .floating-input-group {
+    position: relative;
+  }
+  .floating-input-group input:focus ~ label,
+  .floating-input-group input:not(:placeholder-shown) ~ label {
+    @apply text-xs -translate-y-6 text-primary;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   Scrollbar
+══════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.6);
+}
+
+/* ══════════════════════════════════════════════
+   Page transitions
+══════════════════════════════════════════════ */
+.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
