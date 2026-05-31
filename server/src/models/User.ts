@@ -2,13 +2,20 @@ import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface IUser extends Document {
   _id: Types.ObjectId;
-  mobile: string;
-  otp?: string;
-  otpExpires?: Date;
+  // Identity — one of these must exist
+  mobile?: string;
+  email?: string;
+  googleId?: string;
+  // Magic link
+  magicLinkToken?: string;
+  magicLinkExpiry?: Date;
+  // Auth state
   isVerified: boolean;
   isAdmin: boolean;
   tokenVersion: number;
+  // Profile
   name?: string;
+  avatar?: string;
   hostel?: Types.ObjectId;
   lastLogin?: Date;
   createdAt: Date;
@@ -17,50 +24,22 @@ export interface IUser extends Document {
 
 const UserSchema = new Schema<IUser>(
   {
-    mobile: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      match: [/^[6-9]\d{9}$/, "Please enter a valid 10-digit Indian mobile number"],
-    },
-    otp: {
-      type: String,
-      select: false,
-    },
-    otpExpires: {
-      type: Date,
-      select: false,
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    tokenVersion: {
-      type: Number,
-      default: 0,
-    },
-    name: {
-      type: String,
-      trim: true,
-    },
-    hostel: {
-      type: Schema.Types.ObjectId,
-      ref: "Hostel",
-    },
-    lastLogin: {
-      type: Date,
-      default: null,
-    },
+    mobile: { type: String, unique: true, sparse: true, trim: true },
+    email: { type: String, unique: true, sparse: true, trim: true, lowercase: true },
+    googleId: { type: String, unique: true, sparse: true },
+    magicLinkToken: { type: String, select: false },
+    magicLinkExpiry: { type: Date, select: false },
+    isVerified: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false },
+    tokenVersion: { type: Number, default: 0 },
+    name: { type: String, trim: true },
+    avatar: { type: String },
+    hostel: { type: Schema.Types.ObjectId, ref: "Hostel" },
+    lastLogin: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-// Index for daily active users query
 UserSchema.index({ lastLogin: -1 });
 UserSchema.index({ isAdmin: 1 });
 

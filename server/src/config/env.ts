@@ -10,6 +10,9 @@ const required = [
   'CLOUDINARY_CLOUD_NAME',
   'CLOUDINARY_API_KEY',
   'CLOUDINARY_API_SECRET',
+  'GOOGLE_CLIENT_ID',
+  'EMAIL_USER',
+  'EMAIL_APP_PASSWORD',
 ];
 
 required.forEach((key) => {
@@ -29,6 +32,7 @@ export const env = {
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:3000',
-  // Optional — OTP falls back to console.log without it
-  FAST2SMS_API_KEY: process.env.FAST2SMS_API_KEY,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
+  EMAIL_USER: process.env.EMAIL_USER as string,
+  EMAIL_APP_PASSWORD: process.env.EMAIL_APP_PASSWORD as string,
 };
