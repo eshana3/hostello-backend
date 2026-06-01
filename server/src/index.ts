@@ -28,11 +28,22 @@ configureCloudinary();
 // ── Initialize Socket.io ─────────────────────
 initSocket(httpServer);
 
-// ── Middleware ───────────────────────────────
+// ── CORS — allow all hostello Vercel URLs ────
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (
+      origin.includes("hostello") ||
+      origin.includes("localhost") ||
+      origin === process.env.CLIENT_URL
+    ) {
+      return callback(null, true);
+    }
+    callback(new Error("Not allowed by CORS"));
+  },
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -47,7 +58,7 @@ app.use("/api/ai", aiRoutes);
 
 // Health check
 app.get("/api/health", (_req, res) => {
-  res.json({ success: true, message: "HostelHub API is running 🚀" });
+  res.json({ success: true, message: "Hostello API is running 🚀" });
 });
 
 // 404 handler
