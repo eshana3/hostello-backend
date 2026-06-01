@@ -11,9 +11,28 @@ import listingRoutes from './routes/listings.routes';
 
 const app = express();
 
+// Allow all Vercel preview URLs + the main domain
+const ALLOWED_ORIGINS = [
+  env.CLIENT_URL,
+  'https://hostello-frontend-two.vercel.app',
+  'https://hostello-frontend-git-main-eshana-s-projects.vercel.app',
+  'http://localhost:3000',
+].filter(Boolean);
+
 app.use(helmet());
 app.use(morgan(env.NODE_ENV === 'development' ? 'dev' : 'combined'));
-app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    // Allow any vercel.app subdomain for this project
+    if (origin.includes('hostello') || origin.includes('localhost') || ALLOWED_ORIGINS.includes(origin)) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -25,7 +44,7 @@ app.use('/api/listings', listingRoutes);
 app.get('/api/health', (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
-    message: 'HostelHub API is running',
+    message: 'Hostello API is running',
     timestamp: new Date().toISOString(),
     environment: env.NODE_ENV,
   });
